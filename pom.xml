@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.wildfly.swarm</groupId>
+    <artifactId>parent</artifactId>
+    <version>6</version>
+    <relativePath />
+  </parent>
+
+  <groupId>org.wildfly.swarm</groupId>
+  <artifactId>spring-boot-parent</artifactId>
+  <version>1.0.0.Alpha1-SNAPSHOT</version>
+
+  <name>WildFly Swarm: Spring Boot Parent</name>
+  <description>WildFly Swarm: Spring Boot Parent</description>
+
+  <packaging>pom</packaging>
+
+  <scm>
+    <connection>scm:git:git@github.com:wildfly-swarm/wildfly-swarm-spring-boot.git</connection>
+    <developerConnection>scm:git:git@github.com:wildfly-swarm/wildfly-swarm-spring-boot.git</developerConnection>
+    <url>https://github.com/wildfly-swarm/wildfly-swarm-spring</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <version.swarm.core>1.0.0.Beta6-SNAPSHOT</version.swarm.core>
+    <version.spring-boot>1.3.3.RELEASE</version.spring-boot>
+  </properties>
+  
+  <repositories>
+    <repository>
+      <id>projectodd-snapshots</id>
+      <name>Project:odd Snapshots from CI</name>
+      <url>https://repository-projectodd.forge.cloudbees.com/snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <build>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>spring-boot</artifactId>
+        <version>1.0.0.Alpha1-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>swarm-boot-starter-logging</artifactId>
+        <version>1.0.0.Alpha1-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>swarm-boot-starter-validation</artifactId>
+        <version>1.0.0.Alpha1-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>swarm-boot-starter-web</artifactId>
+        <version>1.0.0.Alpha1-SNAPSHOT</version>
+      </dependency>
+
+      <!--  -->
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>container</artifactId>
+        <version>${version.swarm.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>msc</artifactId>
+        <version>${version.swarm.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>bean-validation</artifactId>
+        <version>${version.swarm.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${version.swarm.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>logging</artifactId>
+        <version>${version.swarm.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>undertow</artifactId>
+        <version>${version.swarm.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${version.spring-boot}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <modules>
+    <module>spring-boot</module>
+    <module>swarm-boot-starter-logging</module>
+    <module>swarm-boot-starter-validation</module>
+    <module>swarm-boot-starter-web</module>
+  </modules>
+</project>
