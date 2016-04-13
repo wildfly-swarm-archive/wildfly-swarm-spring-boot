@@ -9,7 +9,7 @@
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>swarm-boot-starter-logging</artifactId>
+  <artifactId>spring-boot-starter-logging</artifactId>
 
   <name>WildFly Swarm: Spring Boot Starter: Logging</name>
   <description>WildFly Swarm: Spring Boot Starter: Logging</description>

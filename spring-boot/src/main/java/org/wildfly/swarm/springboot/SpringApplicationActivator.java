@@ -4,26 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Enumeration;
 
 import org.jboss.msc.service.ServiceActivator;
 import org.jboss.msc.service.ServiceActivatorContext;
-import org.jboss.msc.service.ServiceRegistry;
 import org.jboss.msc.service.ServiceRegistryException;
-import org.jboss.msc.service.ServiceTarget;
 
 /**
  * @author Bob McWhirter
  */
 public class SpringApplicationActivator implements ServiceActivator {
 
-    public static ServiceRegistry REGISTRY;
-
-    public static ServiceTarget TARGET;
-
     @Override
     public void activate(ServiceActivatorContext context) throws ServiceRegistryException {
-        REGISTRY = context.getServiceRegistry();
-        TARGET = context.getServiceTarget();
 
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
@@ -38,7 +32,6 @@ public class SpringApplicationActivator implements ServiceActivator {
             Thread thread = new Thread(() -> {
                 try {
                     org.springframework.boot.SpringApplication.run(new Object[]{
-                            EmbeddedSwarmUndertowAutoConfiguration.class,
                                     cls
                             },
                             new String[]{});

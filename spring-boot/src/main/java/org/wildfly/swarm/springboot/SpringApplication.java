@@ -1,5 +1,6 @@
 package org.wildfly.swarm.springboot;
 
+import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.wildfly.swarm.Swarm;
@@ -18,6 +19,13 @@ public class SpringApplication {
         Swarm swarm = new Swarm();
         swarm.start();
 
+        JARArchive archive = createArchive( sourceClass );
+
+        swarm.deploy( archive );
+
+    }
+
+    public static JARArchive createArchive(Class source) {
         JARArchive archive = ShrinkWrap.create(JARArchive.class, "spring-boot-bootstrap.jar");
 
         String structure = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -35,12 +43,11 @@ public class SpringApplication {
 
         archive.addAsResource( new StringAsset(structure), "META-INF/jboss-deployment-structure.xml" );
 
+        archive.as(ServiceActivatorArchive.class).addServiceActivator( MSCBridgeActivator.class );
         archive.as(ServiceActivatorArchive.class).addServiceActivator( SpringApplicationActivator.class );
         archive.addPackage(SpringApplicationActivator.class.getPackage());
-        archive.addAsResource( new StringAsset( sourceClass.getName() ), "spring-boot-class");
+        archive.addAsResource( new StringAsset( source.getName() ), "spring-boot-class");
 
-        swarm.deploy( archive );
-
-
+        return archive;
     }
 }

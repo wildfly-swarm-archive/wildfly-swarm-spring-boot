@@ -9,37 +9,26 @@
   </parent>
 
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>spring-boot</artifactId>
+  <artifactId>spring-boot-starter-test</artifactId>
 
-  <name>WildFly Swarm: Spring Boot</name>
-  <description>WildFly Swarm: Spring Boot</description>
+  <name>WildFly Swarm: Spring Boot Starter: Test</name>
+  <description>WildFly Swarm: Spring Boot Starter: Test</description>
 
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>container</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>msc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>undertow</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>arquillian</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
   </dependencies>
 
