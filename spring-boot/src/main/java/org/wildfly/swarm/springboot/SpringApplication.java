@@ -21,7 +21,9 @@ public class SpringApplication {
 
         JARArchive archive = createArchive( sourceClass );
 
-        swarm.deploy( archive );
+        swarm.deployAsync( archive, ()->{
+            System.err.println( "*** BOOTSTRAP JAR DEPLOYED COMPLETELY" );
+        });
 
     }
 
@@ -44,8 +46,8 @@ public class SpringApplication {
         archive.addAsResource( new StringAsset(structure), "META-INF/jboss-deployment-structure.xml" );
 
         archive.as(ServiceActivatorArchive.class).addServiceActivator( MSCBridgeActivator.class );
-        archive.as(ServiceActivatorArchive.class).addServiceActivator( SpringApplicationActivator.class );
-        archive.addPackage(SpringApplicationActivator.class.getPackage());
+        archive.as(ServiceActivatorArchive.class).addServiceActivator( SpringApplicationContextActivator.class );
+        archive.addPackage(SpringApplicationContextActivator.class.getPackage());
         archive.addAsResource( new StringAsset( source.getName() ), "spring-boot-class");
 
         return archive;
