@@ -2,7 +2,11 @@ package org.wildfly.swarm.springboot.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+import org.jboss.msc.service.Service;
+import org.jboss.msc.service.ServiceController;
 import org.jboss.msc.service.ServiceName;
 import org.jboss.msc.service.ValueService;
 import org.jboss.msc.value.ImmediateValue;
@@ -31,6 +35,19 @@ public class Bridge {
                         new ImmediateValue<>(object)
                 )
         ).install();
+    }
+
+    public static <T> T lookup(ServiceName name) {
+        try {
+            ServiceController<?> s = MSCBridgeActivator.REGISTRY.getService(name);
+            s.setMode(ServiceController.Mode.ACTIVE);
+            return (T) s.awaitValue( 5, TimeUnit.SECONDS );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static <T> List<T> getChildrenOf(ServiceName parentName, Class<T> type) {

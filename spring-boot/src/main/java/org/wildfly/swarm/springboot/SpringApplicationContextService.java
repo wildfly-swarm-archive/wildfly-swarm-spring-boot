@@ -30,8 +30,6 @@ public class SpringApplicationContextService implements Service<ApplicationConte
 
     private ConfigurableApplicationContext context;
 
-    private final CountDownLatch latch = new CountDownLatch(1);
-
     public SpringApplicationContextService(ClassLoader classLoader, Class source) {
         this.classLoader = classLoader;
         this.source = source;
@@ -45,23 +43,16 @@ public class SpringApplicationContextService implements Service<ApplicationConte
         //Thread thread = new Thread(() -> {
         Thread.currentThread().setContextClassLoader(this.classLoader);
         try {
-            System.err.println("-----> START ");
-            context.complete();
             this.context = org.springframework.boot.SpringApplication.run(new Object[]{
                             this.source
                     },
                     new String[]{});
 
-            this.latch.countDown();
-            System.err.println("-----> STARTED " + this.context);
+            context.complete();
         } catch (Throwable t) {
             context.failed(new StartException(t));
             t.printStackTrace();
         }
-
-        //thread.setName("spring-boot");
-        //thread.setContextClassLoader(this.classLoader);
-        //thread.start();
     }
 
     @Override
@@ -71,11 +62,6 @@ public class SpringApplicationContextService implements Service<ApplicationConte
 
     @Override
     public ApplicationContext getValue() throws IllegalStateException, IllegalArgumentException {
-        try {
-            this.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return this.context;
     }
 }

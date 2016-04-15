@@ -4,7 +4,11 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.bootstrap.util.BootstrapProperties;
+import org.wildfly.swarm.container.Container;
+import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.msc.ServiceActivatorArchive;
+import org.wildfly.swarm.msc.internal.ServiceActivatorAsset;
 import org.wildfly.swarm.spi.api.JARArchive;
 
 /**
@@ -17,18 +21,20 @@ public class SpringApplication {
         Class sourceClass = (Class) source;
 
         Swarm swarm = new Swarm();
-        swarm.start();
+        swarm.start(true);
 
-        JARArchive archive = createArchive( sourceClass );
+        JARArchive archive = createArchive(swarm, sourceClass);
 
-        swarm.deployAsync( archive, ()->{
-            System.err.println( "*** BOOTSTRAP JAR DEPLOYED COMPLETELY" );
-        });
-
+        swarm.deploy(archive);
     }
 
-    public static JARArchive createArchive(Class source) {
+    public static JARArchive createArchive(Container container, Class source) {
+
+        Archive defaultArchive = container.createDefaultDeployment();
+        ServiceActivatorAsset activatorAsset = defaultArchive.as(ServiceActivatorArchive.class).getAsset();
+
         JARArchive archive = ShrinkWrap.create(JARArchive.class, "spring-boot-bootstrap.jar");
+        archive.as(ServiceActivatorArchive.class).setAsset( activatorAsset );
 
         String structure = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<jboss-deployment-structure>\n" +
@@ -43,12 +49,14 @@ public class SpringApplication {
                 "    </deployment>\n" +
                 "</jboss-deployment-structure>";
 
-        archive.addAsResource( new StringAsset(structure), "META-INF/jboss-deployment-structure.xml" );
+        archive.addAsResource(new StringAsset(structure), "META-INF/jboss-deployment-structure.xml");
 
-        archive.as(ServiceActivatorArchive.class).addServiceActivator( MSCBridgeActivator.class );
-        archive.as(ServiceActivatorArchive.class).addServiceActivator( SpringApplicationContextActivator.class );
+        archive.as(ServiceActivatorArchive.class).addServiceActivator(MSCBridgeActivator.class);
+        archive.as(ServiceActivatorArchive.class).addServiceActivator(SpringApplicationContextActivator.class);
         archive.addPackage(SpringApplicationContextActivator.class.getPackage());
-        archive.addAsResource( new StringAsset( source.getName() ), "spring-boot-class");
+        archive.addAsResource(new StringAsset(source.getName()), "spring-boot-class");
+
+        System.setProperty(BootstrapProperties.APP_ARTIFACT, "spring-boot-bootstrap.jar" );
 
         return archive;
     }
