@@ -1,0 +1,8 @@
+
+{"Spring Boot": [
+  {"name": "spring-boot" },
+  {"name": "spring-boot-starter-logging" },
+  {"name": "spring-boot-starter-test" },
+  {"name": "spring-boot-starter-validation" },
+  {"name": "spring-boot-starter-web" }
+]}
