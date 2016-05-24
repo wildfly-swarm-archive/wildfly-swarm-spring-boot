@@ -26,8 +26,8 @@
   </scm>
 
   <properties>
-    <version.swarm.core>1.0.0.Beta6-SNAPSHOT</version.swarm.core>
-    <version.spring-boot>1.3.3.RELEASE</version.spring-boot>
+    <version.swarm.core>1.0.0.CR3</version.swarm.core>
+    <version.spring-boot>1.3.5.RELEASE</version.spring-boot>
   </properties>
   
   <repositories>
